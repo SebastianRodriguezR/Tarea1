@@ -1,15 +1,11 @@
 # coding=utf-8
-"""Drawing a Quad via a EBO"""
+"""Drawing a board"""
 
-import glfw
+import glfw #importamos las librerias a utilizar
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
 import sys
-
-__author__ = "Daniel Calderon"
-__license__ = "MIT"
-
 
 # We will use 32 bits data, so floats and integers have 4 bytes
 # 1 byte = 8 bits
@@ -41,7 +37,7 @@ def on_key(window, key, scancode, action, mods):
     else:
         print('Unknown key')
 
-def crear_dama(x,y,r,g,b,radius):
+def crear_dama(x,y,r,g,b,radius): #funcion provista que genera arreglo de vertices que dibujan circulo
     
     circle = []
     for angle in range(0,360,10):
@@ -56,8 +52,8 @@ def crear_dama(x,y,r,g,b,radius):
     return np.array(circle, dtype = np.float32)
 def crear_Tablero(shaderProgram):
     
-    # Defining locations and colors for each vertex of the shape
-    #####################################
+    #Funcion que genera la geometria del tablero base, inspirada en el ejemplo ex_quad.py dibuja tablero base blanco y cuadros negros encima,
+    #activa buffers y genera vao, vbo y ebo para dibujo
     
     vertexData = np.array([
     #   positions        colors
@@ -307,17 +303,16 @@ def createShaderProgram():
     return shaderProgram
 
 def crear_damas(shaderProgram,x,y,r,g,b,radius):
+    #genera buffers para cada dama, de forma similar a la funcion que crea el tablero
     dama = crear_dama(x,y,r,g,b,radius) 
      # VAO, VBO and EBO and  for the shape
     #####################################
     vao = glGenVertexArrays(1)
     vbo = glGenBuffers(1)
-    ebo = glGenBuffers(1)
 
     # Binding VBO and EBO to the VAO
     glBindVertexArray(vao)
     glBindBuffer(GL_ARRAY_BUFFER, vbo)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
     glBindVertexArray(0)
 
     # Setting up stride in the Vertex Attribute Object (VAO)
@@ -372,6 +367,7 @@ if __name__ == "__main__":
     glUseProgram(shaderProgram)
 
     # Creating shapes on GPU memory
+    # Generamos los vao y vbo de cada figura junto con el tamaño del arreglo de vertices o el arreglo en si para calcular su tamaño posteriormente
     vao_0, vbo_0, ebo_0, size = crear_Tablero(shaderProgram)
     vao_1, vbo_1, dama_1 = crear_damas(shaderProgram,-0.7, 0.7, 0.0, 0.0, 1.0, 0.04)
     vao_2, vbo_2, dama_2 = crear_damas(shaderProgram, -0.3, 0.7, 0.0, 0.0, 1.0, 0.04)
@@ -413,6 +409,7 @@ if __name__ == "__main__":
         # Clearing the screen in both, color and depth
         glClear(GL_COLOR_BUFFER_BIT)
         
+        # Aqui activamos cada instancia para dibujar cada figura
         glBindVertexArray(vao_0)
         glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, None)
         glBindVertexArray(vao_1)
