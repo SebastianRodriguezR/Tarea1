@@ -1,7 +1,7 @@
 # coding=utf-8
 """Drawing a board"""
-
-import glfw #importamos las librerias a utilizar
+#importamos las librerias a utilizar
+import glfw 
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
@@ -343,7 +343,7 @@ def crear_damas(shaderProgram,x,y,r,g,b,radius):
     return vao, vbo, dama
 
 if __name__ == "__main__":
-    window=None
+    window = None
     # Initialize glfw
     if not glfw.init():
         glfw.set_window_should_close(window, True)
@@ -351,7 +351,7 @@ if __name__ == "__main__":
     width = 600
     height = 600
 
-    window = glfw.create_window(width, height, "Drawing a quad via a EBO", None, None)
+    window = glfw.create_window(width, height, "Drawing a board", None, None)
 
     if not window:
         glfw.terminate()
@@ -462,10 +462,10 @@ if __name__ == "__main__":
         glDrawArrays(GL_TRIANGLES, 0, int(len(dama_24)/6))
 
 
-        # Once the render is done, buffers are swapped, showing only the complete scene.
+        # Once the render is done, buffers are swapped, showing only the complete scene
         glfw.swap_buffers(window)
 
-    # freeing GPU memory
+    # Liberando memoria en GPU 
     glDeleteBuffers(1, [vbo_0])
     glDeleteBuffers(1, [ebo_0])
     glDeleteVertexArrays(1, [vao_0])
