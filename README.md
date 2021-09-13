@@ -1,2 +1,0 @@
-# Tarea1
-Tablero
